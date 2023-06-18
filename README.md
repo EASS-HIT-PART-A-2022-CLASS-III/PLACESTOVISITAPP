@@ -9,7 +9,7 @@ this app using fastapi,streamlit and docker so make sure u have these three.
 To run the APP in  using Docker, you need these following commands:
 
 
-You need to clone the repository:''' git clone https://github.com/EASS-HIT-PART-A-2022-CLASS-III/placestovisit.git '''
+You need to clone the repository:'''git clone https://github.com/EASS-HIT-PART-A-2022-CLASS-III/placestovisit.git '''
 
 then go the app name 'cd placestovisit'
 
