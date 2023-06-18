@@ -1,4 +1,6 @@
-streamlit==0.94.0
-requests==2.26.0
-pytest 
-httpx
+streamlit
+requests
+
+
+
+

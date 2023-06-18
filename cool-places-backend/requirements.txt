@@ -1,5 +1,9 @@
 fastapi
-uvicorn[standard]
+uvicorn
 pydantic
 sqlalchemy
+typing
+pytest
+pytest-asyncio
+
 

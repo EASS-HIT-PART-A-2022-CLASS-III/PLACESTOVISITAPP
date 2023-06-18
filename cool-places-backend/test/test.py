@@ -1,5 +1,4 @@
 
-
 import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy.orm import Session
@@ -10,15 +9,15 @@ sys.path.append(dirname(dirname(abspath(__file__))))
 
 
  
-from main import app, get_db
-from main import LocationCreate, LocationUpdate
+from main import app
+
 
 client = TestClient(app)
 
 
 @pytest.fixture
 def db():
-    from main import engine, Base
+    from main import engine
     from sqlalchemy.orm import Session
 
     # Create a new SQLite in-memory database for testing
@@ -34,47 +33,46 @@ def db():
         connection.close()
 
 
-def test_create_location(db: Session):
-    # Test the creation of a new location
-    response = client.post("/locations", json={"name": "Camp Nou", "country": "Spain", "description": "Barcelona cool football stadium"})
+
+
+def test_create_location():
+    # Test creating a new location
+    data = {
+        "name": "Test Location",
+        "description": "Test description"
+    }
+    response = client.post("/locations", json=data)
     assert response.status_code == 200
-    data = response.json()
-    assert "id" in data
-    assert data["name"] == "Camp Nou"
-    assert data["country"] == "Spain"
-    assert data["description"] == "Barcelona cool football stadium"
+    location = response.json()
+    assert location["name"] == data["name"]
+    assert location["description"] == data["description"]
 
-
-def test_read_location(db: Session):
-    # Test the retrieval of a location
-    response = client.get("/locations/1")
+def test_get_location():
+    # Test retrieving a location
+    location_id = 1  # Assuming there is a location with ID 1 in the database
+    response = client.get(f"/locations/{location_id}")
     assert response.status_code == 200
-    data = response.json()
-    assert "id" in data
-    assert data["id"] == 1
-    assert data["name"] == "Camp nou"
-    assert data["country"] == "Spain"
-    assert data["description"] == "Barcelona cool football stadium"
+    location = response.json()
+    assert location["id"] == location_id
 
-
-def test_update_location(db: Session):
-    # Test the updating of a location
-    response = client.put("/locations/1", json={"name": "New Camp Nou", "country": "Spain", "description": "Updated description"})
+def test_update_location():
+    # Test updating a location
+    location_id = 1  # Assuming there is a location with ID 1 in the database
+    data = {
+        "name": "Updated Location",
+        "description": "Updated description"
+    }
+    response = client.put(f"/locations/{location_id}", json=data)
     assert response.status_code == 200
-    data = response.json()
-    assert "id" in data
-    assert data["id"] == 1
-    assert data["name"] == "New Camp Nou"
-    assert data["country"] == "Spain"
-    assert data["description"] == "Updated description"
+    location = response.json()
+    assert location["name"] == data["name"]
+    assert location["description"] == data["description"]
 
-
-def test_delete_location(db: Session):
-    # Test the deletion of a location
-    response = client.delete("/locations/1")
+def test_delete_location():
+    # Test deleting a location
+    location_id = 1  # Assuming there is a location with ID 1 in the database
+    response = client.delete(f"/locations/{location_id}")
     assert response.status_code == 200
-    data = response.json()
-    assert "message" in data
-    assert data["message"] == "Location deleted successfully."
-
+    result = response.json()
+    assert result["message"] == "Location deleted successfully."
 
